@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Detection App</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        #video {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        #smileys {
+            font-size: 48px;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Face Detector: Happy or Sad</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <div id="smileys">
+        <span id="happy" style="cursor: pointer;">🙂</span>
+        <span id="sad" style="cursor: pointer;">🙁</span>
+    </div>
+    <button id="detect">Detect Emotion</button>
+    <div id="result"></div>
+
+    <script>
+        const video = document.getElementById("video");
+        const resultDiv = document.getElementById("result");
+        let selectedEmotion = "";
+
+        // Access the webcam
+        async function startVideo() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error("Error accessing webcam: " + err);
+                alert("Please allow camera access.");
+            }
+        }
+
+        // Event listeners for smileys
+        document.getElementById("happy").addEventListener("click", () => {
+            selectedEmotion = "Happy";
+            resultDiv.textContent = "Selected Emotion: Happy 🙂";
+        });
+
+        document.getElementById("sad").addEventListener("click", () => {
+            selectedEmotion = "Sad";
+            resultDiv.textContent = "Selected Emotion: Sad 🙁";
+        });
+
+        // Event listener for the detect button
+        document.getElementById("detect").addEventListener("click", () => {
+            if (selectedEmotion) {
+                alert("Detected Emotion: " + selectedEmotion);
+            } else {
+                alert("Please select an emotion first!");
+            }
+        });
+
+        // Start video stream when the page loads
+        window.onload = startVideo;
+    </script>
+</body>
+</html>
